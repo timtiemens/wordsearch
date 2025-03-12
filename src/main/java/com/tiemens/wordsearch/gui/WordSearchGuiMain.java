@@ -8,15 +8,25 @@ import java.awt.*;
 import java.io.IOException;
 
 public class WordSearchGuiMain {
-    private static final String jsonInputFilename = "src/input/wordsearch-1.json";
+    private static final String defaultJsonInputFilename =
+            //"src/input/wordsearch-1.json";
+            //"src/input/book-132.json";
+            "src/input/book-131.json";
+            //"src/inputbook-132.json";
 
     private TwoSidedPane twoSidedPane;
 
     public static void main(String[] args) {
-        new WordSearchGuiMain();
+        String usefilename = defaultJsonInputFilename;
+        if ((args != null) && (args.length >= 1)) {
+            if (! args[0].isEmpty()) {
+                usefilename = args[0];
+            }
+        }
+        new WordSearchGuiMain(usefilename);
     }
 
-    public WordSearchGuiMain() {
+    public WordSearchGuiMain(String jsonInputFilename) {
         EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {

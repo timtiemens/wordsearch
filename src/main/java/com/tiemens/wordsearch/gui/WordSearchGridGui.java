@@ -93,7 +93,10 @@ public class WordSearchGridGui extends JPanel {
             JTextField jtf = mapRowCol2JTextField.get(rowCol);
 
             // 1st character:
-            jtf.setBackground(getSelectedColor());
+            Color first = getSelectedColor();
+            //  change the color a little:
+            first = new Color(first.getRed() - 75, first.getGreen() - 75, 255);
+            jtf.setBackground(first);
             for (int i = 1, n = word.length(); i < n; i++) {
                 rowCol = rowCol.computeDirection(direction, maxRowCol);
                 // 2-N character:

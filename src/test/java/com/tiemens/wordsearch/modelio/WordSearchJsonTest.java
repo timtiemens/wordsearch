@@ -12,6 +12,19 @@ import static org.junit.Assert.assertTrue;
 public class WordSearchJsonTest {
 
     @Test
+    public void testBookJson() throws IOException {
+        String filename = "src/input/book-132.json";
+
+        WordSearchJson wsj = new WordSearchJson();
+        WordSearchModel wsm = wsj.loadFromJsonFile(filename);
+
+        System.out.println("------------ start");
+        wsm.toDebugString(System.out);
+        System.out.println("------------ end");
+
+    }
+
+    @Test
     public void testJsonLoad() throws IOException {
         String filename = "src/input/wordsearch-1.json";
 
@@ -19,6 +32,8 @@ public class WordSearchJsonTest {
         WordSearchModel wsm = wsj.loadFromJsonFile(filename);
 
         //System.out.println("Starts with=" + startsWith + " ret=" + ret);
+
+        // can't do this 'arbitrarily':
         assertEquals("mismatch rows", wsm.getRows(), 14);
         assertEquals("mismatch cols", wsm.getCols(), 11);
 
