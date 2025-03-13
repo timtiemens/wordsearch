@@ -9,14 +9,19 @@ public class GuiContext {
     private final WordSearchModel wsm;
     private final WordSearchGridGui gridGui;
     private final WordSearchLookForGui lookForGui;
+    private final WordSearchControlGui control;
 
+    // our state
+    // private boolean leaveHighlights = false;  // kept in control.getLeaveHighlights
 
     public GuiContext(WordSearchModel wsm,
                       WordSearchGridGui gridGui,
-                      WordSearchLookForGui lookForGui) {
+                      WordSearchLookForGui lookForGui,
+                      WordSearchControlGui control) {
         this.wsm = wsm;
         this.gridGui = gridGui;
         this.lookForGui = lookForGui;
+        this.control = control;
     }
 
     public WordSearchModel getWsm() {
@@ -32,5 +37,17 @@ public class GuiContext {
 
         gridGui.selectWord(word);
 
+    }
+
+    public boolean getLeaveHighlights() {
+        return control.getLeaveHighlights();
+    }
+
+    public void setLeaveHighlights(boolean newValue) {
+        control.setLeaveHighlights(newValue);
+    }
+
+    public void setFilename(String filename) {
+        control.setFilename(filename);
     }
 }

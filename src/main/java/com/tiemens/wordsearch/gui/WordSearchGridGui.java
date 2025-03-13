@@ -5,7 +5,10 @@ import com.tiemens.wordsearch.model.WordSearchModel;
 
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Font;
+
+import java.awt.GridLayout;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -56,10 +59,25 @@ public class WordSearchGridGui extends JPanel {
         }
     }
 
+    private Font slightlyBigger = null;
+    private boolean debug = true;
     private JTextField createJTextField() {
         JTextField ret = new JTextField();
         ret.setEditable(false);
-
+        // todo: font size?
+        if (debug) {
+            System.out.println("font=" + ret.getFont());
+            debug = false;
+        }
+        if (slightlyBigger == null) {
+            int newsize;
+            newsize = ret.getFont().getSize();
+            System.out.println("*** Original Size = " + newsize);
+            newsize = newsize + 2;
+            slightlyBigger = new Font("Serif", Font.PLAIN, newsize);
+                    // Font.font("Serif", Font.BOLD, 12);
+        }
+        ret.setFont(slightlyBigger);
         return ret;
     }
 
@@ -75,8 +93,10 @@ public class WordSearchGridGui extends JPanel {
     }
 
     public void unselectAll() {
-        for (JTextField jtf : mapRowCol2JTextField.values()) {
-            jtf.setBackground( getTheOriginalBackground() );
+        if (! guiContext.getLeaveHighlights()) {
+            for (JTextField jtf : mapRowCol2JTextField.values()) {
+                jtf.setBackground(getTheOriginalBackground());
+            }
         }
     }
     public void selectWord(String word) {

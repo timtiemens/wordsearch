@@ -220,7 +220,8 @@ public class WordSearchModel {
                         ret.put(key, new Pair<>(rowCol, direction));
                     } else {
                         if (vals.size() == 0) {
-                            System.out.println("  WHY? vals.size=0 for rowcol=" + rowCol);
+                            // ok
+                            // System.out.println("  NOTE vals.size=0 for rowcol=" + rowCol);
                         } else {
                             throw new IllegalArgumentException("wrong number of answers: " + vals.size());
                         }
