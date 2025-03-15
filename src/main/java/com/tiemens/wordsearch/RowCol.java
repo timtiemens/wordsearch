@@ -51,12 +51,6 @@ public class RowCol {
             ret = new RowCol(newrow, newcol);
         }
 
-
-        // safety
-        if (newcol > 20) {
-            throw new IllegalArgumentException("newcol OOR=" + newcol + "  cols=" + newcol);
-        }
-
         return ret;
     }
 
@@ -68,27 +62,26 @@ public class RowCol {
                 '}';
     }
 
-    public RowCol computeDirection(WordSearchModel.Direction direction, RowCol maxCoord) {
+    public RowCol computeDirection(WordSearchModel.Direction direction, RowCol maxRowCol) {
         int newrow = this.getRow() + direction.getDeltaRow();
         int newcol = this.getCol() + direction.getDeltaCol();
         RowCol ret = new RowCol(newrow, newcol);
-        if (ret.isInBounds(maxCoord)) {
+        if (ret.isInBounds(maxRowCol)) {
             return ret;
         } else {
             return null;
         }
     }
 
-    private boolean isInBounds(RowCol maxCoord) {
+    private boolean isInBounds(RowCol maxRowCol) {
         final int row = this.getRow();
         final int col = this.getCol();
-        if ( (row < 0) || (row >= maxCoord.getRow()) ) {
+        if ( (row < 0) || (row >= maxRowCol.getRow()) ) {
             return false;
         }
-        if ( (col < 0) || (col >= maxCoord.getCol()) ) {
+        if ( (col < 0) || (col >= maxRowCol.getCol()) ) {
             return false;
         }
         return true;
     }
 }
-
