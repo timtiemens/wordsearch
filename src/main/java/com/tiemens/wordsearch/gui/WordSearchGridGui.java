@@ -1,6 +1,7 @@
 package com.tiemens.wordsearch.gui;
 
 import com.tiemens.wordsearch.Pair;
+import com.tiemens.wordsearch.RowCol;
 import com.tiemens.wordsearch.model.WordSearchModel;
 
 import javax.swing.JPanel;
@@ -16,7 +17,7 @@ public class WordSearchGridGui extends JPanel {
     private GuiContext guiContext;
     //private WordSearchModel wsm;
 
-    private Map<WordSearchModel.RowCol, JTextField> mapRowCol2JTextField = new HashMap<>();
+    private Map<RowCol, JTextField> mapRowCol2JTextField = new HashMap<>();
     private Color theOriginalBackground = null;
 
     public WordSearchGridGui() {
@@ -37,7 +38,7 @@ public class WordSearchGridGui extends JPanel {
                 JTextField cell = createJTextField();
                 this.add(cell);
 
-                WordSearchModel.RowCol rowCol = new WordSearchModel.RowCol(row, col);
+                RowCol rowCol = new RowCol(row, col);
                 mapRowCol2JTextField.put(rowCol, cell);
 
                 if (theOriginalBackground == null) {
@@ -50,7 +51,7 @@ public class WordSearchGridGui extends JPanel {
     }
 
     public void updateGui() {
-        for (WordSearchModel.RowCol rowCol : mapRowCol2JTextField.keySet()) {
+        for (RowCol rowCol : mapRowCol2JTextField.keySet()) {
             JTextField jtf = mapRowCol2JTextField.get(rowCol);
             String value = guiContext.getWsm().getGrid().getAt(rowCol);
             jtf.setText(value);
@@ -102,12 +103,12 @@ public class WordSearchGridGui extends JPanel {
     public void selectWord(String word) {
         unselectAll();
 
-        Pair<WordSearchModel.RowCol, WordSearchModel.Direction> pair = guiContext.getWsm().getMatchToLookFor().getPairForWord(word);
+        Pair<RowCol, WordSearchModel.Direction> pair = guiContext.getWsm().getMatchToLookFor().getPairForWord(word);
 
         if (pair != null) {
-            final WordSearchModel.RowCol maxRowCol = guiContext.getWsm().getMaxRowCol();
+            final RowCol maxRowCol = guiContext.getWsm().getMaxRowCol();
 
-            WordSearchModel.RowCol rowCol = pair.getKey();
+            RowCol rowCol = pair.getKey();
             final WordSearchModel.Direction direction = pair.getValue();
             System.out.println("GRIDGUID rowCol=" + rowCol + " direction=" + direction);
             JTextField jtf = mapRowCol2JTextField.get(rowCol);

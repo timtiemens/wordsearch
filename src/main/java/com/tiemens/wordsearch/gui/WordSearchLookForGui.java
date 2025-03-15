@@ -1,9 +1,10 @@
 package com.tiemens.wordsearch.gui;
 
+import com.tiemens.wordsearch.RowCol;
 import com.tiemens.wordsearch.model.LookForWords;
-import com.tiemens.wordsearch.model.WordSearchModel;
 
-import javax.swing.*;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,7 +19,7 @@ public class WordSearchLookForGui extends JPanel {
     //private WordSearchModel wsm;
 
     private List<String> theList;
-    private Map<WordSearchModel.RowCol, JTextField> mapRowCol2LookFor = new HashMap<>();
+    private Map<RowCol, JTextField> mapRowCol2LookFor = new HashMap<>();
 
     public WordSearchLookForGui() {
     }
@@ -38,7 +39,7 @@ public class WordSearchLookForGui extends JPanel {
             JTextField cell = createJTextField();
             this.add(cell);
 
-            WordSearchModel.RowCol rowCol = new WordSearchModel.RowCol(row, 0);
+            RowCol rowCol = new RowCol(row, 0);
             mapRowCol2LookFor.put(rowCol, cell);
         }
 
@@ -46,7 +47,7 @@ public class WordSearchLookForGui extends JPanel {
     }
 
     public void updateGui() {
-        for (WordSearchModel.RowCol rowCol : mapRowCol2LookFor.keySet()) {
+        for (RowCol rowCol : mapRowCol2LookFor.keySet()) {
             JTextField jtf = mapRowCol2LookFor.get(rowCol);
             String value = theList.get(rowCol.getRow());
             jtf.setText(value);

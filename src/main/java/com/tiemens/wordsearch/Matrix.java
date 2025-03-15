@@ -1,4 +1,4 @@
-package com.tiemens.socialsecurity.math;
+package com.tiemens.wordsearch;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
