@@ -3,7 +3,6 @@ package com.tiemens.wordsearch;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 import java.util.function.Function;
 
 public class Matrix<T> {
@@ -11,9 +10,11 @@ public class Matrix<T> {
     private int rows;
     private int cols;
 
+    @SuppressWarnings("unchecked")
     public Matrix(int rows, int cols) {
         this.rows = rows;
         this.cols = cols;
+        // this is the unchecked operation:
         this.data = (T[][]) new Object[rows][cols];
     }
 

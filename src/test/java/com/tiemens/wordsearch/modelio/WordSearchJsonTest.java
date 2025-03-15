@@ -1,5 +1,6 @@
 package com.tiemens.wordsearch.modelio;
 
+import com.tiemens.wordsearch.RowCol;
 import com.tiemens.wordsearch.model.WordSearchModel;
 import org.junit.Test;
 
@@ -58,7 +59,7 @@ public class WordSearchJsonTest {
     }
 
     private void subtest(WordSearchModel wsm, int row, int col, WordSearchModel.Direction direction, String expecting) {
-        WordSearchModel.RowCol coords = new WordSearchModel.RowCol(row, col);
+        RowCol coords = new RowCol(row, col);
         String actual = wsm.computeStringForRowColAndDirection(coords, direction);
 
         //System.out.println("  getat coords=" + coords + " actual=" + actual);
@@ -66,7 +67,7 @@ public class WordSearchJsonTest {
     }
 
     private void subtestintermediate(WordSearchModel wsm, int row, int col,  List<String> expected) {
-        WordSearchModel.RowCol rowCol = new WordSearchModel.RowCol(row, col);
+        RowCol rowCol = new RowCol(row, col);
         WordSearchModel.MatchToLookFor ret = new WordSearchModel.MatchToLookFor();
         WordSearchModel.MatchToLookFor actual = wsm.computeStringsForRowColAllDirections(rowCol, ret);
 

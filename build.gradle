@@ -29,3 +29,7 @@ sourceCompatibility = 21
 targetCompatibility = 21
 
 // $ gradle wrapper --gradle-version 8.10.2
+
+tasks.withType(JavaCompile) {
+    options.compilerArgs += ['-Xlint:unchecked']
+}

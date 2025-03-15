@@ -1,5 +1,6 @@
 package com.tiemens.wordsearch.model;
 
+import com.tiemens.wordsearch.RowCol;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -12,10 +13,10 @@ public class WordSearchModelTest {
     private static final int cols = 5;
 
     private WordSearchModel create() {
-        List<String> search = List.of("ABC", "DEF");
-        List<String> rowStrings = List.of();
+        List<String> lookFor = List.of("ABC", "DEF");
+        List<String> rowStrings = List.of("A B C D E", "F G H I J", "K L M N O", "P Q R S T", "U V W X Y");
 
-        WordSearchModel wsm = WordSearchModel.create(search, rowStrings);
+        WordSearchModel wsm = WordSearchModel.create(lookFor, rowStrings);
 
         return wsm;
     }
@@ -25,12 +26,12 @@ public class WordSearchModelTest {
 
         WordSearchModel wsm = create();
 
-        Iterator<WordSearchModel.RowCol> iterator = wsm.getGrid().iterator();
+        Iterator<RowCol> iterator = wsm.getGrid().iterator();
 
         int count = 0;
         while (iterator.hasNext()) {
-            WordSearchModel.RowCol coords = iterator.next();
-            System.out.println(" next=" + coords);
+            RowCol rowCol = iterator.next();
+            System.out.println(" next=" + rowCol);
             count++;
         }
         Assert.assertEquals("mismatch", rows * cols, count);
