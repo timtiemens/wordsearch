@@ -11,8 +11,9 @@ public class WordSearchGuiMain {
     private static final String defaultJsonInputFilename =
             //"src/input/wordsearch-1.json";
             //"src/input/book-132.json";
-            "src/input/book-131.json";
+	    //"src/input/book-131.json";
             //"src/inputbook-132.json";
+           "src/input/wordsearch-3.json";
 
     private TwoSidedPane twoSidedPane;
 

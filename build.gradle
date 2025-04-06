@@ -1,6 +1,10 @@
 plugins {
     id 'java'
     id 'application'
+    id 'eclipse'
+    id 'org.springframework.boot' version '3.4.0'  // not 3.4.1
+    id 'io.spring.dependency-management' version '1.1.7'
+
 }
 
 repositories {
@@ -8,7 +12,8 @@ repositories {
 }
 
 application {
-    mainClass = 'com.tiemens.wordsearch.gui.WordSearchGuiMain'
+//    mainClass = 'com.tiemens.wordsearch.gui.WordSearchGuiMain'
+    mainClass = 'com.tiemens.wordsearch.springboot.MainApplication'
 }
 
 dependencies {
@@ -18,11 +23,19 @@ dependencies {
 
   // https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core
 //  implementation group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.18.2'
-  implementation 'com.fasterxml.jackson.core:jackson-databind:2.0.1'
+    // provided by spring by default?
+//    implementation 'com.fasterxml.jackson.core:jackson-databind:2.0.1'
 
-
-    
     testImplementation 'junit:junit:4.12'
+
+    // springboot + ? vue? freemarker?
+//    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-freemarker'
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
 }
 
 sourceCompatibility = 21

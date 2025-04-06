@@ -1,0 +1,16 @@
+   <!--
+           <th:block th:each="i: ${#numbers.sequence(1, 5)}"></th:block>
+        <th:block th:each="i: ${#numbers.sequence(1, gameModel.getRows())}"></th:block>
+
+<#list items as item>
+            <li>${item.getName()}</li>
+          </#list>
+-->
+
+
+<table>
+           <tr>
+             <th:block th:each="i: ${#numbers.sequence(1, 8)}"></th:block>
+
+           </tr>
+        </table>

@@ -74,7 +74,7 @@ public class WordSearchGridGui extends JPanel {
             int newsize;
             newsize = ret.getFont().getSize();
             System.out.println("*** Original Size = " + newsize);
-            newsize = newsize + 2;
+            newsize = newsize + 11;
             slightlyBigger = new Font("Serif", Font.PLAIN, newsize);
                     // Font.font("Serif", Font.BOLD, 12);
         }
@@ -118,9 +118,10 @@ public class WordSearchGridGui extends JPanel {
             //  change the color a little:
             first = new Color(first.getRed() - 75, first.getGreen() - 75, 255);
             jtf.setBackground(first);
+
+            // 2nd-Nth characters:
             for (int i = 1, n = word.length(); i < n; i++) {
                 rowCol = rowCol.computeDirection(direction, maxRowCol);
-                // 2-N character:
                 jtf = mapRowCol2JTextField.get(rowCol);
                 jtf.setBackground(getSelectedColor());
             }

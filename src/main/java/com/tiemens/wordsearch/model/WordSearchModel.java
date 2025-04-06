@@ -7,6 +7,8 @@ import com.tiemens.wordsearch.RowCol;
 import java.io.PrintStream;
 import java.util.*;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class WordSearchModel {
     private final int rows;
@@ -45,6 +47,10 @@ public class WordSearchModel {
 
     public WordSearchGrid getGrid() {
         return grid;
+    }
+
+    public String getAt(int row, int col) {
+        return grid.getAt(row, col);
     }
 
     public LookForWords getLookForWords() {
@@ -131,6 +137,27 @@ public class WordSearchModel {
         return allMatches;
     }
 
+    public List<Integer> getRowsNumberList() {
+        int n = getRows();
+        return getNumbersList(n);
+    }
+    public List<Integer> getColsNumberList() {
+        int n = getCols();
+        return getNumbersList(n);
+    }
+    private List<Integer> getNumbersList(int n) {
+        List<Integer> ret = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            ret.add( Integer.valueOf(i) );
+        }
+        return ret;
+        /*
+        return IntStream.rangeClosed(0, n)
+                .boxed()
+                .collect(java.util.stream.Collectors.toList());
+
+         */
+    }
 
     // multi-step intermediate -
     //  a) Just store the 8 strings from compute
@@ -336,6 +363,7 @@ public class WordSearchModel {
         public String getAt(RowCol rowCol) {
             return this.get(rowCol.getRow(), rowCol.getCol());
         }
+        public String getAt(int row, int col) { return this.get(row, col); }
         public Iterator<RowCol> iterator() {
             return new RowColIterator(this.getRows(), this.getCols());
         }
