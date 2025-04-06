@@ -2,9 +2,11 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Freemarker   FTL   not FTLH</title>
+        <title>WordSearch</title>
     </head>
     <body>
-        <a href="/game?fileName=wordsearch-3.json">wordsearch-3.json</a>
+        <#list listoffilenames as filename>
+           <li style="text-align: left"> <a href="/game?fileName=${ filename }">${ filename }</a></li></li>
+        </#list>
     </body>
 </html>

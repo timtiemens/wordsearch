@@ -49,10 +49,6 @@ public class WordSearchModel {
         return grid;
     }
 
-    public String getAt(int row, int col) {
-        return grid.getAt(row, col);
-    }
-
     public LookForWords getLookForWords() {
         return lookForWords;
     }
@@ -137,6 +133,9 @@ public class WordSearchModel {
         return allMatches;
     }
 
+    //
+    // Spring/Freemarker methods
+    //
     public List<Integer> getRowsNumberList() {
         int n = getRows();
         return getNumbersList(n);

@@ -4,6 +4,7 @@ package com.tiemens.wordsearch.springboot;
 import com.tiemens.wordsearch.model.WordSearchModel;
 import com.tiemens.wordsearch.modelio.WordSearchJson;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +22,14 @@ import java.util.Map;
 
 @RestController
 public class SpringController {
+
+    private SpringService springService;
+
+    public SpringController(@Autowired SpringService ss) {
+        this.springService = ss;
+    }
+
+
     @RequestMapping(value = "/cars", method = RequestMethod.GET)
     public String init(@ModelAttribute("model") ModelMap model) {
         System.out.println("INIT /cars");
@@ -28,6 +37,7 @@ public class SpringController {
         model.addAttribute("carList", carList);
         return "index2";
     }
+
     private List<String> getCarlist() {
         return new ArrayList<>();
     }
@@ -41,7 +51,7 @@ public class SpringController {
 */
 
     @GetMapping("/index2")
-    public ModelAndView index() {
+    public ModelAndView index2() {
         ModelAndView modelAndView = new ModelAndView("index2");
         modelAndView.addObject("title", "Freemarker");
         return modelAndView;
@@ -91,34 +101,25 @@ public class SpringController {
         System.out.println("ENTER /api/loadfilename, filename=" + filename);
 
         final String key = filename;
-        WordSearchModel wordSearchModel = getFromFile(filename);
+        WordSearchModel wordSearchModel = springService.getFromFile(filename);
         mapFilename2Model.put(filename, wordSearchModel);
 
         System.out.println("  EXIT /api/loadfilename, model=" + wordSearchModel);
         return wordSearchModel;
     }
 
-    private WordSearchModel getFromFile(String shortName) {
-        String dirName = "src/input";
-        String filename = dirName + "/" + shortName;
-        try {
-            return WordSearchJson.fromFile(filename).asWordSearchModel();
-        } catch (IOException e) {
-            System.out.println("Threw IO exception on " + filename + " : " + e);
-            return null;
-        }
-    }
+
 
     @GetMapping("/game")
     public ModelAndView gameDisplay(@RequestParam(name = "fileName", required = true) String fileName) {
         System.out.println("ENTER gameDisplay, shortName=" + fileName);
 
-        WordSearchModel wsm = getFromFile(fileName);
+        WordSearchModel wsm = springService.getFromFile(fileName);
         if (wsm == null) {
             System.out.println("We failed to load filename=" + fileName);
             ModelAndView modelAndView = new ModelAndView("gameloaderror");
             modelAndView.addObject("fileName", fileName);
-            return new ModelAndView("gameloaderror");
+            return modelAndView;
         } else {
             System.out.println("  Loaded " + fileName + " with #rows=" + wsm.getRows());
 
@@ -131,23 +132,14 @@ public class SpringController {
         }
     }
 
+    @GetMapping("/")
+    public ModelAndView index() {
+        System.out.println("ENTER index");
+        List<String> filenames = springService.getFilenamesFromDirectory("src/input");
+        System.out.println("ENTER index, theList=" + filenames);
 
-    public List<Item> getItemList() {
-        return List.of(new Item("abba"),
-                       new Item("baker"),
-                       new Item("charlie"));
+        ModelAndView modelAndView = new ModelAndView("index");
+        modelAndView.addObject("listoffilenames", filenames);
+        return modelAndView;
     }
-
-    public static class Item {
-        private final String name;
-
-        public Item(String name) {
-            this.name = name;
-        }
-
-        public String getName() {
-            return name;
-        }
-    }
-
 }
