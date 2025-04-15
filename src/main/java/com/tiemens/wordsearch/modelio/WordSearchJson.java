@@ -23,6 +23,7 @@ public class WordSearchJson {
     private String notes;
     private List<String> rows;
     private List<String> search;
+    private Map<String, List<String>> answers;
 
 
     //@JsonIgnore
@@ -55,10 +56,12 @@ public class WordSearchJson {
         }
 
         WordSearchJson ret = mapper.readValue(is, WordSearchJson.class);
+
         if (debug) {
             System.out.println("name=" + ret.name);
             System.out.println("Number rows=" + ret.rows.size());
             System.out.println("Number search=" + ret.search.size());
+            System.out.println("Number answer=" + ((ret.answers == null) ? 0 : ret.answers.size()));
         }
 
         return ret;
@@ -70,10 +73,7 @@ public class WordSearchJson {
         List<String> rowsAsInput = getRows();
         System.out.println("RowsAsIn.size=" + rowsAsInput.size());
         ret = WordSearchModel.create(this.search, this.rows);
-
-        //try {
-        //} catch (IOException e) {
-        //}
+        ret.setAnswers(answers);
 
         return ret;
     }
@@ -94,5 +94,7 @@ public class WordSearchJson {
     public List<String> getSearch() {
         return search;
     }
+
+    public Map<String, List<String>> getAnswers() { return answers; }
 }
 

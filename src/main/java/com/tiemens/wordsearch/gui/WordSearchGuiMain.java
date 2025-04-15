@@ -12,8 +12,8 @@ public class WordSearchGuiMain {
             //"src/input/wordsearch-1.json";
             //"src/input/book-132.json";
 	    //"src/input/book-131.json";
-            //"src/inputbook-132.json";
-           "src/input/wordsearch-3.json";
+            "src/input/book-130.json";
+    // rc/input/wordsearch-3.json";
 
     private TwoSidedPane twoSidedPane;
 
@@ -78,7 +78,8 @@ public class WordSearchGuiMain {
                 System.out.println("GRID: rows=" + wsm.getGrid().getRows());
 
             } catch (IOException e) {
-                // nothing
+                System.out.println("IOException reading file " + filename);
+                e.printStackTrace();
             }
         }
 

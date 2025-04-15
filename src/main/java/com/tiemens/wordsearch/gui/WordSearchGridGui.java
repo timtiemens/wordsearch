@@ -1,7 +1,7 @@
 package com.tiemens.wordsearch.gui;
 
-import com.tiemens.wordsearch.Pair;
 import com.tiemens.wordsearch.RowCol;
+import com.tiemens.wordsearch.model.RowColDirectionRecord;
 import com.tiemens.wordsearch.model.WordSearchModel;
 
 import javax.swing.JPanel;
@@ -103,13 +103,14 @@ public class WordSearchGridGui extends JPanel {
     public void selectWord(String word) {
         unselectAll();
 
-        Pair<RowCol, WordSearchModel.Direction> pair = guiContext.getWsm().getMatchToLookFor().getPairForWord(word);
+        // TODO: refactor here
+        RowColDirectionRecord pair = guiContext.getWsm().getMatchToLookFor().getRowColDirectionRecord(word);
 
         if (pair != null) {
             final RowCol maxRowCol = guiContext.getWsm().getMaxRowCol();
 
-            RowCol rowCol = pair.getKey();
-            final WordSearchModel.Direction direction = pair.getValue();
+            RowCol rowCol = pair.rowCol();
+            final WordSearchModel.Direction direction = pair.direction();
             System.out.println("GRIDGUID rowCol=" + rowCol + " direction=" + direction);
             JTextField jtf = mapRowCol2JTextField.get(rowCol);
 

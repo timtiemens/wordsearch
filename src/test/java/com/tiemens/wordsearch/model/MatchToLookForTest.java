@@ -28,13 +28,13 @@ public class MatchToLookForTest {
         String maxValue = "CEREBRUMBLE";
         String startsWith = maxValue.substring(0, 1); // C
         List<String> startsWithList = lfw.wordsThatStartWith(startsWith);
-        List<String> startsWithCandidates = WordSearchModel.MatchToLookFor.computeCandidates(maxValue,
+        List<String> startsWithCandidates = MatchToLookFor.computeCandidates(maxValue,
                 startsWithList);
         assertEquals( expected, startsWithCandidates );
 
         expected = List.of("CREDO");
         maxValue = "CREDOECG";
-        startsWithCandidates = WordSearchModel.MatchToLookFor.computeCandidates(maxValue,
+        startsWithCandidates = MatchToLookFor.computeCandidates(maxValue,
                 startsWithList);
         assertEquals( expected, startsWithCandidates );
     }

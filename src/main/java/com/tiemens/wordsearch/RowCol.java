@@ -63,14 +63,20 @@ public class RowCol {
     }
 
     public RowCol computeDirection(WordSearchModel.Direction direction, RowCol maxRowCol) {
-        int newrow = this.getRow() + direction.getDeltaRow();
-        int newcol = this.getCol() + direction.getDeltaCol();
-        RowCol ret = new RowCol(newrow, newcol);
+        RowCol ret = computeDirectionRaw(direction);
         if (ret.isInBounds(maxRowCol)) {
             return ret;
         } else {
             return null;
         }
+    }
+
+    public RowCol computeDirectionRaw(WordSearchModel.Direction direction) {
+
+        int newrow = this.getRow() + direction.getDeltaRow();
+        int newcol = this.getCol() + direction.getDeltaCol();
+        RowCol ret = new RowCol(newrow, newcol);
+        return ret;
     }
 
     private boolean isInBounds(RowCol maxRowCol) {

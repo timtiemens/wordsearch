@@ -17,18 +17,22 @@ public class WordSearchModel {
     private final LookForWords lookForWords;
     private final WordSearchGrid grid;
     private final MatchToLookFor allMatches;
+    private final Answers answers;
 
     public static WordSearchModel create(List<String> lookFor, List<String> rows) {
         List<String> canonicalRows = new ArrayList<>();
         List<String> canonicalLookFor = new ArrayList<>();
+        Map<String, List<String>> canonicalAnswers = new HashMap<>();
         for (String s : rows) {
             canonicalRows.add(s.replace(" ", "").toUpperCase());
         }
         for (String s : lookFor) {
             canonicalLookFor.add(s.toUpperCase());
         }
+        // TODO? canonicalAnswers
         WordSearchModel ret = new WordSearchModel(canonicalRows,
-                                                  canonicalLookFor);
+                                                  canonicalLookFor,
+                                                  canonicalAnswers);
 
         return ret;
     }
@@ -88,7 +92,8 @@ public class WordSearchModel {
         return sb.toString();
     }
 
-    private WordSearchModel(List<String> rowStrings, List<String> searchWords) {
+    private WordSearchModel(List<String> rowStrings, List<String> searchWords, Map<String,
+                            List<String>> canonicalAnswers) {
         this.rows = rowStrings.size();
         this.cols = rowStrings.getFirst().length();
         this.maxRowCol = new RowCol(rows, cols);
@@ -99,6 +104,8 @@ public class WordSearchModel {
 
         this.allMatches = processAllMatches();
         trimDownMatches(this.allMatches, lookForWords);
+
+        this.answers = Answers.createFull(this);
     }
 
     /**
@@ -158,146 +165,12 @@ public class WordSearchModel {
          */
     }
 
-    // multi-step intermediate -
-    //  a) Just store the 8 strings from compute
-    //  b) later, allow for paring-down the lists, in 'answerMap'
-    public static class MatchToLookFor {
-        private final Map<RowCol, Map<Direction, String>> map = new HashMap<>();
+    public void setAnswers(Map<String, List<String>> answers) {
+        // TODO TBD to do
+    }
 
-        private Map<RowCol, Map<Direction, List<String>>> answerMap;
-        private Map<String, Pair<RowCol, Direction>> answerMapReverse;
-
-        public void toDebugString(PrintStream out) {
-            out.println("There are " + answerMap.size() + " row col keys and " +
-                    map.size() + " regular keys");
-
-            for (RowCol rowCol : answerMap.keySet()) {
-                Map<Direction, List<String>> thisRowCol = answerMap.get(rowCol);
-                for (Direction direction : Direction.values()) {
-                    if (thisRowCol.containsKey(direction)) {
-                        List<String> answers = thisRowCol.get(direction);
-                        if (! answers.isEmpty()) {
-                            out.println("" + rowCol + " dir=" + direction + " is " + answers);
-                        }
-                    }
-                }
-            }
-        }
-
-        public void addRowColDirectionValue(RowCol rowCol,
-                                            Direction direction,
-                                            String value) {
-            if (value != null) {
-                if (!map.containsKey(rowCol)) {
-                    map.put(rowCol, new HashMap<>());
-                }
-                map.get(rowCol).put(direction, value);
-            }
-
-            System.out.println("Store rowCol=" + rowCol + " direction=" + direction.toString() + " value=" + value + " map.size=" + map.size());
-        }
-
-        public void trimDownMatches(LookForWords lookForWords) {
-            Map<RowCol, Map<Direction, List<String>>> ret = new HashMap<>();
-
-            for (RowCol rowCol : map.keySet()) {
-                Map<Direction, List<String>> subRet = new HashMap<>();
-
-                Map<Direction, String> coordMap = map.get(rowCol);
-
-                for (Direction direction : coordMap.keySet()) {
-                    final String value = coordMap.get(direction);
-                    final String startsWith = value.substring(0, 1);
-                    final List<String> startsWithList = lookForWords.wordsThatStartWith(startsWith);
-
-                    if (startsWithList.isEmpty()) {
-                        // nothing
-                    } else {
-                        List<String> candidateSolutions = computeCandidates(value, startsWithList);
-                        if (candidateSolutions.size() > 1) {
-                            System.out.println("** WARNING on " + value + " candidates=" + candidateSolutions);
-                        }
-                        subRet.put(direction, candidateSolutions);
-                    }
-                }
-                ret.put(rowCol, subRet);
-            }
-            this.answerMap = ret;
-        }
-        public String getForRowColAndDirection(RowCol rowCol, Direction direction) {
-            return map.get(rowCol).get(direction);
-        }
-
-        public Pair<RowCol, Direction> getPairForWord(String word) {
-            // Map<RowCol, Map<Direction, List<String>>> answerMap;
-            if (answerMapReverse == null) {
-                answerMapReverse = computeAnswerMapReverse();
-            }
-            return answerMapReverse.get(word);
-        }
-
-        public Map<String, Pair<RowCol, Direction>> computeAnswerMapReverse() {
-            Map<String, Pair<RowCol, Direction>> ret = new HashMap<>();
-
-            for (RowCol rowCol : answerMap.keySet()) {
-                for (Direction direction : answerMap.get(rowCol).keySet()) {
-                    List<String> vals = answerMap.get(rowCol).get(direction);
-                    if (vals.size() == 1) {
-                        final String key = vals.get(0);
-                        ret.put(key, new Pair<>(rowCol, direction));
-                    } else {
-                        if (vals.size() == 0) {
-                            // ok
-                            // System.out.println("  NOTE vals.size=0 for rowcol=" + rowCol);
-                        } else {
-                            throw new IllegalArgumentException("wrong number of answers: " + vals.size());
-                        }
-                    }
-                }
-            }
-
-            return ret;
-        }
-        /**
-         * Constraint: IF(S) in RETURN(S) THEN (S) in LookForStartsWith
-         *             IF(S) in RETURN(S) THEN (S) in substring(longValue)
-         *
-         * @param longValue the "pool" to look in, starting at (0,1) and going to (0,n)
-         * @param lookForStartsWith
-         * @return a subset of lookForStartsWith
-         */
-        public static List<String> computeCandidates(String longValue, List<String> lookForStartsWith) {
-            List<String> ret = new ArrayList<>();
-
-            //if (longValue.startsWith("DING")) {
-            //    System.out.println(" #$#$#  found DING");
-            //}
-
-            for (int len = longValue.length() ; len >= 2; len--) {
-                 final String thisSearch = longValue.substring(0, len);
-                 if  (lookForStartsWith.contains(thisSearch)) {
-                     //System.out.println(" *** Found " + thisSearch);
-                     ret.add(thisSearch);
-                 } else {
-                     if (thisSearch.equals("DING")) {
-                         for (String s : lookForStartsWith) {
-                             if (s.equals(thisSearch)) {
-                                 System.out.println("  ### WTF thisSearch found in lookForStartsWith");
-                                 ret.add(thisSearch);
-                             }
-                         }
-                     }
-                 }
-            }
-            System.out.println("Looking for " + longValue + " found " + ret + " in list.size=" + lookForStartsWith.size());
-//            if ((fulldebug++ < 5) || (longValue.equals("DING"))) {
-//                System.out.println("  lookForStartsWith=" + lookForStartsWith);
-//            }
-            return ret;
-        }
-        private static int fulldebug = 0;
-
-
+    public Answers getAnswers() {
+        return answers;
     }
 
 
