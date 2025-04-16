@@ -110,7 +110,16 @@ public class Answers {
   //  }
 
     public static record AnswerWordRecord(String word, RowCol firstRowCol, WordSearchModel.Direction direction, List<RowCol> rowColList) {
-
+        public String getStringForRowColList() {
+            StringBuilder sb = new StringBuilder();
+            String sep = "";
+            for (RowCol rowcol : rowColList) {
+                sb.append(sep);
+                sep = ",";
+                sb.append("r" + rowcol.getRow() + "c" + rowcol.getCol());
+            }
+            return sb.toString();
+        }
     }
 
     private String testfreemarker(String word) {
