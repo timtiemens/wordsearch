@@ -5,11 +5,10 @@
         <title>WordSearch Game Display</title>
         <script>
           function myFunction(word, listrowcol) {
-            //alert('Span was clicked on ' + word + " and list=" + listrowcol);
             aslist = listrowcol.split(",");
-            //alert('Span length is ' + aslist.len + " and list=" + listrowcol + " and aslist[0]=" + aslist[0])
             setHighLight(word, aslist);
           }
+
           function setHighLight(word, aslist) {
             color = 'red'
             aslist.forEach(rc => {
@@ -32,6 +31,7 @@
                 setHighLight( key, value['rowcollist'].split(",") )
              }
           }
+
           function getAllWordAndListRowCol() {
             ret = new Map();
 
