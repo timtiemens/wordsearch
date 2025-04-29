@@ -153,9 +153,12 @@ public class MatchToLookFor {
     }
 
     public RowColDirectionRecord getRowColDirectionRecord(String word) {
-        // TODO:
         Pair<RowCol, Direction> pair = getPairForWord(word);
-        return new RowColDirectionRecord(pair.getKey(), pair.getValue());
+        if (pair != null) {
+            return new RowColDirectionRecord(pair.getKey(), pair.getValue());
+        } else {
+            return null;
+        }
     }
 
 

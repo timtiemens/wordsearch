@@ -42,7 +42,8 @@ public class Answers {
         RowColDirectionRecord rowColRecord = wsm.getMatchToLookFor().getRowColDirectionRecord(word);
 
         if (mapWord2AnswerWord.containsKey(word) || (rowColRecord == null)) {
-            throw new IllegalArgumentException("rowcol=" + rowColRecord);
+            // throw new IllegalArgumentException("rowcol=" + rowColRecord);
+            return null;
         } else {
             RowCol firstRowCol = rowColRecord.rowCol();
             WordSearchModel.Direction direction = rowColRecord.direction();
